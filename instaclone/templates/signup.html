@@ -23,7 +23,9 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
+                    <div style="display:none" id="errors" class="well form-error-message"></div>
                         <form method="POST" class="register-form" id="register-form">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="name" id="name" placeholder="Your Name"/>
@@ -60,5 +62,27 @@
     <!-- JS -->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/django-ajax.js'%}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $('#go').click(function() {
+        $.post("ajax-sign-up",
+    {
+        username: $("#username").val(),
+        email: $("#email").val(),
+        password: $("#password").val()
+    },
+    function(data, status){
+	if (JSON.parse(data).Status == 'Success') {
+		window.location = '/';
+	} else {
+		$('#errors').html("<span>" + JSON.parse(data).Message + "</span>")
+		$('#errors').css('display', 'block')
+	}
+    });
+        return false;
+        })
+})
+</script>
 </body>
 </html>

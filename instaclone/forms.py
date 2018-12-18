@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.db.models import F
-from instapic.models import User
+from instaclone.models import User
 from django.contrib.auth.hashers import make_password, check_password
 from urllib.request import urlopen
 from random import randint
@@ -59,10 +59,10 @@ class AjaxSignUp(Ajax):
         if User.objects.filter(email=self.email).exists():
         	return self.error("Email address already in use.")
 
-        u = User(username=self.username, password=make_password(self.password), email=self.email)
-        u.save()
+            u = User(username=self.username, password=make_password(self.password), email=self.email)
+            u.save()
 
-        return self.success("Account Created!")
+            return self.success("Account Created!")
 
 class AjaxLogin(Ajax):
 	def validate(self):
@@ -88,4 +88,3 @@ class AjaxLogin(Ajax):
 		u = User.objects.filter(email=self.email)[0]
 
 		return u, self.success("User logged in!")
-        
